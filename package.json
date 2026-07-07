@@ -1,0 +1,22 @@
+{
+  "name": "jeius-portfolio",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "dev:packages": "turbo run dev --filter=\"{./packages/*}...\"",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.4",
+    "turbo": "^2.10.4"
+  },
+  "packageManager": "pnpm@11.10.0",
+  "engines": {
+    "node": ">=24"
+  }
+}

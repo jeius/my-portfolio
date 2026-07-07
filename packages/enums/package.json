@@ -1,0 +1,31 @@
+{
+  "name": "@jeius-portfolio/enums",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Julius P. Pahama",
+  "license": "ISC",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./globals": {
+      "types": "./dist/globals.d.ts",
+      "default": "./dist/globals.js"
+    }
+  },
+  "devDependencies": {
+    "@jeius-portfolio/eslint-config": "workspace:*",
+    "@jeius-portfolio/typescript-config": "workspace:*",
+    "eslint": "^9.39.1",
+    "typescript": "5.9.2"
+  }
+}

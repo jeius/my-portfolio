@@ -1,0 +1,10 @@
+{
+  "extends": "@jeius-portfolio/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "strictNullChecks": true,
+    "emitDeclarationOnly": true,
+  },
+  "include": ["src"],
+  "exclude": ["dist", "build", "node_modules"]
+}
