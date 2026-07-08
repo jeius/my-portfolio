@@ -1,0 +1,117 @@
+/**
+ * Extracts the error message from an error object or array of errors.
+ *
+ * This utility function handles various error formats, including objects with a `message` property,
+ * arrays of such objects, or plain strings. If the error format is unrecognized, it returns a default
+ * error message.
+ *
+ * @template T - The type of the error input.
+ * @param error - The error object, array of errors, or unknown input.
+ * @returns A string containing the extracted error message(s) or a default message if none is found.
+ *
+ * @example
+ * ```typescript
+ * const error = { message: 'Something went wrong' };
+ * const message = extractErrorMessage(error); // 'Something went wrong'
+ *
+ * const errors = [{ message: 'Error 1' }, { message: 'Error 2' }];
+ * const message = extractErrorMessage(errors); // 'Error 1, Error 2'
+ *
+ * const unknownError = 123;
+ * const message = extractErrorMessage(unknownError); // 'An unexpected error occurred'
+ * ```
+ */
+export function extractErrorMessage<
+  T extends { message: string } | { message: string }[] | unknown = unknown,
+>(error: T): string {
+  if (error === null || error === undefined) {
+    return 'No error found';
+  }
+
+  if (Array.isArray(error)) {
+    const errorMessages = error.map((err) => {
+      if (typeof err === 'object' && 'message' in err) {
+        return String(err.message);
+      } else if (typeof err === 'string') {
+        return err;
+      }
+      return 'An unexpected error occurred';
+    });
+    return errorMessages.join(', ');
+  } else if (typeof error === 'object' && 'message' in error) {
+    return String(error.message);
+  } else if (typeof error === 'string') {
+    return error;
+  }
+
+  return 'An unexpected error occurred';
+}
+
+/**
+ * Extracts the HTTP status code from an error object.
+ *
+ * @template T - The type of the error input.
+ * @param error - The error object or unknown input.
+ * @returns A number representing the extracted HTTP status code or `500` if none is found.
+ *
+ * @example
+ * ```ts
+ * const error = { status: 404 };
+ * const status = extractErrorStatus(error); // 404
+ *
+ * const unknownError = {};
+ * const status = extractErrorStatus(unknownError); // 500
+ * ```
+ */
+export function extractErrorStatus<T = unknown>(error: T): number {
+  if (error && typeof error === 'object' && 'status' in error)
+    return Number((error as { status: unknown }).status);
+  return 500;
+}
+
+/**
+ * Extracts the HTTP status text from an error object.
+ *
+ * @template T - The type of the error input.
+ * @param error - The error object or unknown input.
+ * @returns A string representing the extracted HTTP status text or 'Internal Server Error' if none is found.
+ *
+ * @example
+ * ```ts
+ * const error = { statusText: 'Not Found' };
+ * const statusText = extractErrorStatusText(error); // 'Not Found'
+ *
+ * const unknownError = {};
+ * const statusText = extractErrorStatusText(unknownError); // 'Internal Server Error'
+ * ```
+ */
+export function extractErrorStatusText<T = unknown>(error: T): string {
+  if (error && typeof error === 'object' && 'statusText' in error)
+    return String((error as { statusText: unknown }).statusText);
+  return 'Internal Server Error';
+}
+
+/**
+ * Extracts the error name from an error object.
+ *
+ * This utility function retrieves the `name` property from an error object. If the `name` property
+ * is not present or the input is not an object, it returns a default value of `'Unknown Error'`.
+ *
+ * @template T - The type of the error input.
+ * @param error - The error object or unknown input.
+ * @returns A string containing the extracted error name or `'Unknown Error'` if none is found.
+ *
+ * @example
+ * ```typescript
+ * const error = { name: 'ValidationError' };
+ * const name = extractErrorName(error); // 'ValidationError'
+ *
+ * const unknownError = {};
+ * const name = extractErrorName(unknownError); // 'Unknown Error'
+ * ```
+ */
+export function extractErrorName<T = unknown>(error: T): string {
+  if (error && typeof error === 'object' && 'name' in error)
+    return String((error as { name: unknown }).name);
+  return 'Unknown Error';
+}
