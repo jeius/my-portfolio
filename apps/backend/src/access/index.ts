@@ -6,7 +6,5 @@ export const admin: Access = ({req}) => {
 
   if (!user) return false;
 
-  return {
-    role: { equals: Roles.ADMIN.value }
-  }
+  return user.role === Roles.ADMIN.value;
 }

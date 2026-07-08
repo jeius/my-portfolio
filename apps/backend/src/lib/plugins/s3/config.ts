@@ -9,6 +9,7 @@ const config: S3StorageOptions['config'] = {
   },
   region: S3_REGION,
   endpoint: S3_ENDPOINT,
+  forcePathStyle: true,
 }
 
 export const S3Config: Plugin[] = [
