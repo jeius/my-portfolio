@@ -8,6 +8,7 @@ interface ErrorOptions {
 export class BaseError extends Error {
   statusCode?: number;
   statusText?: string;
+  cause?: unknown;
 
   constructor(message: string, options?: ErrorOptions) {
     super(message);
