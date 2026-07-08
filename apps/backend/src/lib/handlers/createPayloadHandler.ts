@@ -1,0 +1,251 @@
+/**
+ * Utility function to create a standardized Payload handler.
+ *
+ * This function wraps a custom handler with additional functionality, such as:
+ * - Authorization checks for admin users.
+ * - Logging of operation success or failure.
+ * - Measuring and logging the elapsed time for the operation.
+ * - Returning a standardized JSON response.
+ */
+
+import { ApiFetchResponse } from '@jeius-portfolio/types/api';
+import {
+  extractErrorMessage,
+  extractErrorStatus,
+  extractErrorStatusText,
+} from '@jeius-portfolio/utilities/extractors';
+import { status as HttpStatus } from 'http-status';
+import { isString } from 'lodash-es';
+import {
+  addDataAndFileToRequest,
+  APIError,
+  PayloadHandler,
+  PayloadRequest,
+  ValidationError,
+} from 'payload';
+import { abortableAPIHandler } from './abortableHandler';
+import { createInternalServerError, createTimeoutError } from '../utils/createError';
+import { verifyCRONJWT } from '../utils/cronJwt';
+import { isAbortErrorStatus } from '../utils/errorChecker';
+import { extractToken } from '../utils/extractToken';
+import { isAdmin } from '../utils/isAdmin';
+
+/**
+ * Options for configuring the Payload handler.
+ */
+export interface HandlerOptions<T = unknown> {
+  /**
+   * Whether the handler requires the user to be an admin.
+   *
+   * @default false
+   */
+  requireAdmin?: boolean;
+
+  /**
+   * Whether the handler requires the user to be authenticated.
+   *
+   * @default true
+   */
+  requireAuth?: boolean;
+
+  /**
+   * Whether the handler can only be executed by a CRON robot.
+   *
+   * @default false
+   */
+  requireCRONRobot?: boolean;
+
+  /**
+   * Maximum time (in milliseconds) to allow for the handler to execute before timing out.
+   * If the handler takes longer than this time, it will be aborted and an error response
+   * will be returned.
+   *
+   * @default 30000 (30 seconds)
+   */
+  maxDuration?: number;
+
+  /**
+   * The custom handler function to execute.
+   * @param req - The Payload request object.
+   * @param signal - An `AbortSignal` that can be used to handle request cancellation
+   * and timeouts.
+   *
+   * @returns A Promise that resolves to the data to be returned in the response.
+   */
+  handler: (req: PayloadRequest, signal: AbortSignal) => Promise<T>;
+
+  /**
+   * A custom success message to include in the response.
+   * Can be a string or a function that returns a string or a Promise that resolves to a string.
+   *
+   * @default 'Operation completed successfully.'
+   */
+  successMessage?: string | ((req: PayloadRequest, data: T) => string | Promise<string>);
+}
+
+/**
+ * Creates a standardized Payload handler.
+ *
+ * @param options - The options for configuring the handler.
+ * @returns A function that handles the request and returns a `JSON` response.
+ *
+ * @description
+ * This function wraps a custom handler with additional functionality:
+ * - If `requireAuth` is `true`, it checks if the user is authenticated and throws an error if not.
+ * - If `requireAdmin` is `true`, it checks if the user is an admin and throws an error if not.
+ * - Executes the custom handler.
+ * - Logs success or error messages and returns a standardized `JSON` response.
+ * - Handles errors gracefully, including `APIError` instances.
+ */
+export function createPayloadHandler<T>({
+  requireAdmin = false,
+  requireAuth = true,
+  requireCRONRobot = false,
+  handler,
+  maxDuration = 30 * 1000,
+  successMessage,
+}: HandlerOptions<T>): PayloadHandler {
+  return async (req) => {
+    const { user, payload, t } = req;
+
+    // Record the start time for duration logging
+    const startTime = performance.now();
+
+    // Create an internal abort controller to trigger the timeout
+    const abortController = new AbortController();
+
+    // Combine the request signal with the abort controller signal to allow for cancellation
+    const signal = AbortSignal.any(
+      [req.signal, abortController.signal].filter(Boolean) as AbortSignal[]
+    );
+
+    // Timeout to abort the request if it takes too long
+    const timeoutId = setTimeout(() => {
+      abortController.abort(createTimeoutError());
+    }, maxDuration);
+
+    try {
+      const anyRequirement = requireAuth || requireAdmin || requireCRONRobot;
+
+      if (anyRequirement) {
+        // Each enabled requirement is checked independently.
+        // Auth passes if at least one is satisfied (OR logic).
+        let authSatisfied = false;
+
+        if (requireAuth && user) {
+          authSatisfied = true;
+        }
+
+        if (!authSatisfied && requireAdmin && user) {
+          if (isAdmin(user)) {
+            authSatisfied = true;
+          }
+        }
+
+        if (!authSatisfied && requireCRONRobot) {
+          const token = extractToken(req.headers, 'Bearer');
+          if (token) {
+            // verifyCRONJWT throws APIError(401) on failure, letting it propagate
+            await verifyCRONJWT(token);
+            authSatisfied = true;
+          }
+        }
+
+        if (!authSatisfied) {
+          // If only requireAdmin was enabled and the user is present but not admin,
+          // return 403 Forbidden rather than 401 Unauthorized.
+          const onlyAdminRequired = requireAdmin && !requireAuth && !requireCRONRobot;
+          if (onlyAdminRequired && user) {
+            const status = HttpStatus.FORBIDDEN;
+            throw new APIError(
+              t('error:unauthorizedAdmin'),
+              status,
+              { message: HttpStatus[`${status}_MESSAGE`] },
+              true
+            );
+          }
+
+          const status = HttpStatus.UNAUTHORIZED;
+          throw new APIError(
+            t('error:unauthorized'),
+            status,
+            { message: HttpStatus[`${status}_MESSAGE`] },
+            true
+          );
+        }
+      }
+
+      // Since data and files are not automatically parsed by Payload for custom endpoints,
+      // we need to manually add them to the request object
+      await addDataAndFileToRequest(req);
+
+      const dbTransactionID = await payload.db.beginTransaction();
+      if (dbTransactionID === null) {
+        throw createInternalServerError('Failed to start database transaction.');
+      }
+      // Attach the transaction ID to the request object so that it can be used in
+      // the handler and any subsequent database operations
+      req.transactionID = dbTransactionID;
+
+      const data = await abortableAPIHandler(() => handler(req, signal), { signal });
+
+      // Commit the transaction if everything is successful
+      await payload.db.commitTransaction(dbTransactionID);
+
+      // Prepare the success response.
+      const status = HttpStatus.OK;
+      const statusText = HttpStatus[status];
+      const init: ResponseInit = { status, statusText };
+
+      const message = successMessage
+        ? isString(successMessage)
+          ? successMessage
+          : await successMessage(req, data)
+        : 'Operation completed successfully.';
+
+      const result: ApiFetchResponse<T> = { message, data };
+      return Response.json(result, init);
+    } catch (error) {
+      // Prepare the error response.
+      let message = extractErrorMessage(error);
+      let status = extractErrorStatus(error);
+      let statusText = extractErrorStatusText(error);
+      let shouldLog = true;
+
+     if (error instanceof ValidationError) {
+        status = error.status || HttpStatus.BAD_REQUEST;
+        message = `[Validation Error]: ${error.message}`;
+        statusText = HttpStatus[status as 500] || 'Bad Request';
+      } else if (error instanceof APIError) {
+        status = error.status;
+        message = `[API Error]: ${error.message}`;
+        statusText = HttpStatus[status as 500] || 'Internal Server Error';
+
+        // Client Closed Request is expected on abort, so we can skip logging
+        if (isAbortErrorStatus(status)) shouldLog = false;
+      }
+
+      if (req.transactionID !== undefined) {
+        await payload.db.rollbackTransaction(req.transactionID);
+        payload.logger.warn(
+          {
+            transactionID: req.transactionID,
+            message,
+          },
+          `Rolled back transaction due to error`
+        );
+      }
+
+      const res: ApiFetchResponse<T> = { message, error };
+
+      if (shouldLog) payload.logger.error(error, message);
+
+      // Return the error response.
+      return Response.json(res, { status, statusText });
+    } finally {
+      clearTimeout(timeoutId);
+      const elapsed = (performance.now() - startTime).toFixed(2);
+      payload.logger.info(`[Request Duration]: ${elapsed}ms`);
+    }
+  };
+}
