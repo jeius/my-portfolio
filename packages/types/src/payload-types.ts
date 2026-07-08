@@ -268,6 +268,14 @@ export interface Project {
   liveLink?: string | null;
   featured?: boolean | null;
   sortOrder?: number | null;
+  features?:
+    | {
+        title: string;
+        description: string;
+        images: (number | Media)[];
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -475,6 +483,14 @@ export interface ProjectsSelect<T extends boolean = true> {
   liveLink?: T;
   featured?: T;
   sortOrder?: T;
+  features?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        images?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -554,6 +570,7 @@ export interface Profile {
   avatar: number | Media;
   location?: string | null;
   willingToRelocate?: boolean | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -581,6 +598,7 @@ export interface ProfileSelect<T extends boolean = true> {
   avatar?: T;
   location?: T;
   willingToRelocate?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
