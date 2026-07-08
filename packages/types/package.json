@@ -17,6 +17,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.d.ts"
     },
+    "./api": {
+      "types": "./dist/api/index.d.ts",
+      "default": "./dist/api/index.d.ts"
+    },
     "./payload-types": {
       "types": "./dist/payload-types.d.ts",
       "default": "./dist/payload-types.d.ts"
@@ -26,6 +30,10 @@
     "@jeius-portfolio/eslint-config": "workspace:*",
     "@jeius-portfolio/typescript-config": "workspace:*",
     "eslint": "^9.39.1",
+    "payload": "3.85.1",
     "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "payload": "3.85.1"
   }
 }
