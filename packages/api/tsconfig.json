@@ -1,0 +1,17 @@
+{
+  "extends": "@jeius-portfolio/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules/**", 
+    "dist/**", 
+    ".turbo/**", 
+    "build/**",
+    "tests/**",
+    "vitest.config.ts", 
+    "scripts/**"
+  ]
+}

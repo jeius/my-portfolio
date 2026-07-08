@@ -1,0 +1,52 @@
+{
+  "name": "@jeius-portfolio/api",
+  "version": "2.0.2",
+  "description": "Api client for the portfolio",
+  "private": true,
+  "author": "Julius Pahama <www.linkedin.com/in/julius-pahama>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "dev:safe": "pnpm dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix . && prettier --write ."
+  },
+  "dependencies": {
+    "@payloadcms/sdk": "^3.85.1",
+    "http-status": "^2.1.0",
+    "qs-esm": "^7.0.3"
+  },
+  "devDependencies": {
+    "@jeius-portfolio/eslint-config": "workspace:*",
+    "@jeius-portfolio/types": "workspace:*",
+    "@jeius-portfolio/typescript-config": "workspace:*",
+    "@jeius-portfolio/utilities": "workspace:*",
+    "payload": "^3.85.1"
+  },
+  "peerDependencies": {
+    "@jeius-portfolio/utilities": "workspace:*",
+    "payload": "*"
+  },
+  "peerDependenciesMeta": {
+    "@jeius-portfolio/utilities": {
+      "optional": false
+    },
+    "payload": {
+      "optional": false
+    }
+  }
+}
