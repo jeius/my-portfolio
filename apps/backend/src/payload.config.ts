@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Users } from '@/collections/Users'
-import { DATABASE_URL, PAYLOAD_SECRET } from '@/lib/constants/env'
+import { DATABASE_URL, PAYLOAD_SECRET, SERVER_URL } from '@/lib/constants/env'
 import { collections } from '@/collections'
 import { plugins } from '@/lib/plugins'
 import { globals } from '@/globals'
@@ -42,4 +42,5 @@ export default buildConfig({
   }),
   sharp,
   plugins: plugins,
+  serverURL: SERVER_URL
 })
