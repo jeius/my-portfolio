@@ -20,7 +20,7 @@ export const H1 = forwardRef<
       {...props}
       ref={ref}
       className={cn(
-        "scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance",
+        "scroll-m-20 text-center text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-balance",
         className,
       )}
     >
