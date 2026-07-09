@@ -1,26 +1,35 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import { CollectionSlug, PayloadRequest } from 'payload';
 import {
-  BACKEND_SKILLS,
   BIO,
   EMAIL,
-  FRONTEND_SKILLS,
   FULL_STACK_MOBILE_DEVELOPER,
   GITHUB_URL,
   INTERN_WEB_DEVELOPER,
   LACTALINK,
+  LACTALINK_SKILLS,
   LINKEDIN_URL,
   PHONE,
+  TECHNICAL_SKILLS,
   TMS,
+  TMS_SKILLS,
 } from './data';
-import { getServerSideURL } from '@/lib/utils/getURL';
 
 export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
   const { payload } = req;
 
   // 1. Clear existing data (optional, but good for idempotent seeding)
-  const collectionsToDelete: CollectionSlug[] = ['projects', 'skills', 'experiences', 'media'];
+  const collectionsToDelete: CollectionSlug[] = [
+    'payload-preferences',
+    'payload-locked-documents',
+    'projects',
+    'skills',
+    'skill-categories',
+    'experiences',
+    'media',
+  ];
+
   await Promise.all(
     collectionsToDelete.map((collection) =>
       payload.delete({
@@ -31,28 +40,30 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
   );
 
   // 2. Seed Skills
-  const skillDocs: Record<string, number> = {};
+  const skillDocs: Map<string, number> = new Map();
 
-  for (const skill of FRONTEND_SKILLS) {
-    const doc = await payload.create({
-      collection: 'skills',
-      data: { name: skill, category: 'FRONTEND' },
-    });
-    skillDocs[skill] = doc.id;
-  }
-
-  for (const skill of BACKEND_SKILLS) {
-    const doc = await payload.create({
-      collection: 'skills',
-      data: { name: skill, category: 'BACKEND' },
-    });
-    skillDocs[skill] = doc.id;
-  }
+  await Promise.all(
+    TECHNICAL_SKILLS.map(async ({ category, skills }) => {
+      const categoryDoc = await payload.create({
+        collection: 'skill-categories',
+        data: { name: category },
+      });
+      return Promise.all(
+        skills.map(async (skill) => {
+          const skillDoc = await payload.create({
+            collection: 'skills',
+            data: { category: categoryDoc.id, name: skill },
+          });
+          skillDocs.set(skill, skillDoc.id);
+          return skillDoc;
+        })
+      );
+    })
+  );
 
   // 3. Handle Media Uploads
   const createMedia = async (filename: string, mimetype: string, alt: string) => {
     const filePath = path.join(process.cwd(), 'public', 'seed-images', filename);
-    payload.logger.info(`Filepath: ${filePath}`)
 
     if (!fs.existsSync(filePath)) {
       console.warn(`File not found: ${filePath}. Skipping media upload.`);
@@ -89,31 +100,32 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
       headline: 'Full Stack Developer crafting fast, scalable web and mobile apps.',
       bio: {
         root: {
-          direction: 'ltr',
+          type: 'root',
           format: '',
           indent: 0,
-          type: 'root',
           version: 1,
           children: [
             {
-              direction: 'ltr',
+              tag: 'h3',
+              type: 'heading',
               format: '',
               indent: 0,
-              type: 'paragraph',
               version: 1,
               children: [
                 {
-                  detail: 0,
-                  format: 0,
                   mode: 'normal',
-                  style: '',
                   text: BIO,
                   type: 'text',
+                  style: '',
+                  detail: 0,
+                  format: 0,
                   version: 1,
                 },
               ],
+              direction: null,
             },
           ],
+          direction: 'ltr',
         },
       },
       location: 'DBAN, Calamba, Misamis Occidental',
@@ -150,6 +162,7 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
                 direction: 'ltr',
                 format: '',
                 indent: 0,
+                tag: 'p',
                 type: 'paragraph',
                 version: 1,
                 children: [
@@ -167,7 +180,7 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
             ],
           },
         },
-        relatedSkills: [...FRONTEND_SKILLS, ...BACKEND_SKILLS].map((skill) => skillDocs[skill]),
+        relatedSkills: LACTALINK_SKILLS.map((s) => skillDocs.get(s)).filter(Boolean) as number[],
         thumbnail: lactalinkThumbId,
       },
     });
@@ -190,6 +203,7 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
                 direction: 'ltr',
                 format: '',
                 indent: 0,
+                tag: 'p',
                 type: 'paragraph',
                 version: 1,
                 children: [
@@ -207,7 +221,7 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
             ],
           },
         },
-        relatedSkills: [skillDocs['React'], skillDocs['Next.js']].filter(Boolean),
+        relatedSkills: TMS_SKILLS.map((s) => skillDocs.get(s)).filter(Boolean) as number[],
         thumbnail: tmsThumbId,
       },
     });

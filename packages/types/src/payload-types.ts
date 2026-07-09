@@ -72,6 +72,7 @@ export interface Config {
     experiences: Experience;
     projects: Project;
     skills: Skill;
+    'skill-categories': SkillCategory;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
+    'skill-categories': SkillCategoriesSelect<false> | SkillCategoriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -286,7 +288,17 @@ export interface Project {
 export interface Skill {
   id: number;
   name: string;
-  category: 'FRONTEND' | 'BACKEND' | 'DEVOPS' | 'NETWORKING';
+  category: number | SkillCategory;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skill-categories".
+ */
+export interface SkillCategory {
+  id: number;
+  name: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -333,6 +345,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'skills';
         value: number | Skill;
+      } | null)
+    | ({
+        relationTo: 'skill-categories';
+        value: number | SkillCategory;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -506,6 +522,15 @@ export interface SkillsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skill-categories_select".
+ */
+export interface SkillCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -584,8 +609,21 @@ export interface SiteSetting {
   phone?: string | null;
   githubUrl?: string | null;
   linkedinUrl?: string | null;
+  meta?: SiteMeta;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SiteMeta".
+ */
+export interface SiteMeta {
+  title?: string | null;
+  description?: string | null;
+  /**
+   * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+   */
+  image?: (number | null) | Media;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -612,9 +650,19 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   phone?: T;
   githubUrl?: T;
   linkedinUrl?: T;
+  meta?: T | SiteMetaSelect<T>;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SiteMeta_select".
+ */
+export interface SiteMetaSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  image?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
