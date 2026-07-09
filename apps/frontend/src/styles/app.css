@@ -1,8 +1,8 @@
 @import 'tailwindcss' source('../');
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/manrope";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/manrope';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -22,6 +22,28 @@
   }
   html {
     @apply font-sans;
+  }
+  h1 {
+    @apply scroll-m-20 text-center text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-balance;
+  }
+  h2 {
+    @apply scroll-m-20 text-3xl md:text-5xl font-semibold leading-tight tracking-tight first:mt-0;
+  }
+  h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+  h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+  p {
+    @apply leading-7 not-first:mt-6;
+  }
+  span {
+    @apply leading-7;
+  }
+  blockquote,
+  code {
+    @apply mt-6 border-l-2 pl-6 italic;
   }
 }
 
