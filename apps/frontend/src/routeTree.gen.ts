@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as DeferredRouteImport } from './routes/deferred'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
 import { Route as PostsRouteRouteImport } from './routes/posts.route'
@@ -34,6 +35,11 @@ const RedirectRoute = RedirectRouteImport.update({
 const DeferredRoute = DeferredRouteImport.update({
   id: '/deferred',
   path: '/deferred',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/api/users': typeof ApiUsersRouteWithChildren
@@ -126,6 +133,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/api/users': typeof ApiUsersRouteWithChildren
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
+  '/about': typeof AboutRoute
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/'
     | '/posts'
     | '/users'
+    | '/about'
     | '/deferred'
     | '/redirect'
     | '/api/users'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/deferred'
     | '/redirect'
     | '/api/users'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/users'
     | '/_pathlessLayout'
+    | '/about'
     | '/deferred'
     | '/redirect'
     | '/_pathlessLayout/_nested-layout'
@@ -213,6 +225,7 @@ export interface RootRouteChildren {
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
+  AboutRoute: typeof AboutRoute
   DeferredRoute: typeof DeferredRoute
   RedirectRoute: typeof RedirectRoute
   ApiUsersRoute: typeof ApiUsersRouteWithChildren
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/deferred'
       fullPath: '/deferred'
       preLoaderRoute: typeof DeferredRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_pathlessLayout': {
@@ -411,6 +431,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostsRouteRoute: PostsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
+  AboutRoute: AboutRoute,
   DeferredRoute: DeferredRoute,
   RedirectRoute: RedirectRoute,
   ApiUsersRoute: ApiUsersRouteWithChildren,
@@ -420,7 +441,7 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from './router'
+import type { getRouter } from './router.tsx'
 import type { createStart } from '@tanstack/react-start'
 declare module '@tanstack/react-start' {
   interface Register {
