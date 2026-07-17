@@ -245,8 +245,8 @@ importers:
   packages/api:
     dependencies:
       '@payloadcms/sdk':
-        specifier: ^3.85.1
-        version: 3.85.2(graphql@16.14.2)(typescript@6.0.3)
+        specifier: 3.85.1
+        version: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
       http-status:
         specifier: ^2.1.0
         version: 2.1.0
@@ -267,7 +267,7 @@ importers:
         specifier: workspace:*
         version: link:../utilities
       payload:
-        specifier: ^3.85.1
+        specifier: 3.85.1
         version: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
 
   packages/enums:
@@ -792,11 +792,11 @@ packages:
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
-    deprecated: 'Merged into tsx: https://tsx.is'
+    deprecated: 'Merged into tsx: https://tsx.hirok.io'
 
   '@esbuild-kit/esm-loader@2.6.5':
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
-    deprecated: 'Merged into tsx: https://tsx.is'
+    deprecated: 'Merged into tsx: https://tsx.hirok.io'
 
   '@esbuild/aix-ppc64@0.25.12':
     resolution: {integrity: sha512-Hhmwd6CInZ3dwpuGTF8fJG6yoWmsToE+vYgD4nytZVxcu1ulHpUQRAB1UJ8+N1Am3Mz4+xOByoQoSZf4D+CpkA==}
@@ -2069,8 +2069,8 @@ packages:
       react: ^19.0.1 || ^19.1.2 || ^19.2.1
       react-dom: ^19.0.1 || ^19.1.2 || ^19.2.1
 
-  '@payloadcms/sdk@3.85.2':
-    resolution: {integrity: sha512-w579Zg8ieMVtD10EFANnXPKy7eOw1vuQAF56Y520qfZrggCucnNaooQj0uL/M06zpuOHxeSVKNU8MhjJ69zKcw==}
+  '@payloadcms/sdk@3.85.1':
+    resolution: {integrity: sha512-qUHV6QVdiMc9qui0aEEXgvqU1oh/x15MsxD8H7U6lk+/7M5HX2QghRrRr1EYdrSK11K0zk09fEAPt9scmnJn/g==}
 
   '@payloadcms/storage-s3@3.85.1':
     resolution: {integrity: sha512-YaGaat5kxY8EelQ6ctY/9AseRfY8Y0suXWqoeIlTmnYVhQ3azlkr9UtSgT2ggS3pMnyIV8KHaXOKRdX2MfnqyA==}
@@ -2080,9 +2080,6 @@ packages:
 
   '@payloadcms/translations@3.85.1':
     resolution: {integrity: sha512-1DssESAfPjgkp8/f7Xq1ZOCnMjSXp0Xkpbo0I7Zt0DCaA+QY7Go+kZQuSYazKKRF+lgSGzKEHRJ5CWqzhpKh8w==}
-
-  '@payloadcms/translations@3.85.2':
-    resolution: {integrity: sha512-d0Fn3tABVPskgpozu4faMlEJrTM64ngGEPSoYBlBN/GiMIQrhOvWJyHJfqJfHGE6X4+QVc2o26p4mlwGCRuRFg==}
 
   '@payloadcms/ui@3.85.1':
     resolution: {integrity: sha512-WCJBEKAnwIvEi2Hiykl92dLVjGga6sPGsNlkbkssNMDqieEUh6qNAb3HewlJUa0IFrhxVFLoAEyJOzHr1UJXkQ==}
@@ -5300,13 +5297,6 @@ packages:
     peerDependencies:
       graphql: ^16.8.1
 
-  payload@3.85.2:
-    resolution: {integrity: sha512-sgqW6+/6cY3hy0cDDcki0HUmUlEfzyr0i8LGJN23waLeiva62i6ufUNG7lNlFrnuU/CjDfkI7MbySayQpikHgg==}
-    engines: {node: ^18.20.2 || >=20.9.0}
-    hasBin: true
-    peerDependencies:
-      graphql: ^16.8.1
-
   pg-cloudflare@1.4.0:
     resolution: {integrity: sha512-Vo7z/6rrQYxpNRylp4Tlob2elzbh+N/MOQbxFVWCxS7oEx6jF53GTJFxK2WWpKuBRkmiin4Mt+xofFDjx09R0A==}
 
@@ -8363,9 +8353,9 @@ snapshots:
       - utf-8-validate
       - yjs
 
-  '@payloadcms/sdk@3.85.2(graphql@16.14.2)(typescript@6.0.3)':
+  '@payloadcms/sdk@3.85.1(graphql@16.14.2)(typescript@6.0.3)':
     dependencies:
-      payload: 3.85.2(graphql@16.14.2)(typescript@6.0.3)
+      payload: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
       qs-esm: 8.0.1
       ts-essentials: 10.0.3(typescript@6.0.3)
     transitivePeerDependencies:
@@ -8392,10 +8382,6 @@ snapshots:
       - typescript
 
   '@payloadcms/translations@3.85.1':
-    dependencies:
-      date-fns: 4.1.0
-
-  '@payloadcms/translations@3.85.2':
     dependencies:
       date-fns: 4.1.0
 
@@ -12029,46 +12015,6 @@ snapshots:
       ts-essentials: 10.0.3(typescript@6.0.3)
       tsx: 4.22.4
       undici: 7.24.4
-      uuid: 13.0.2
-      ws: 8.21.0
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - typescript
-      - utf-8-validate
-
-  payload@3.85.2(graphql@16.14.2)(typescript@6.0.3):
-    dependencies:
-      '@next/env': 15.5.20
-      '@payloadcms/translations': 3.85.2
-      '@types/busboy': 1.5.4
-      ajv: 8.18.0
-      bson-objectid: 2.0.4
-      busboy: 1.6.0
-      ci-info: 4.4.0
-      console-table-printer: 2.12.1
-      croner: 10.0.1
-      dataloader: 2.2.3
-      deepmerge: 4.3.1
-      file-type: 21.3.4
-      get-tsconfig: 4.8.1
-      graphql: 16.14.2
-      http-status: 2.1.0
-      image-size: 2.0.2
-      ipaddr.js: 2.2.0
-      jose: 5.10.0
-      json-schema-to-typescript: 15.0.3
-      minimist: 1.2.8
-      path-to-regexp: 6.3.0
-      pino: 9.14.0
-      pino-pretty: 13.1.2
-      pluralize: 8.0.0
-      qs-esm: 8.0.1
-      range-parser: 1.2.1
-      sanitize-filename: 1.6.3
-      ts-essentials: 10.0.3(typescript@6.0.3)
-      tsx: 4.22.4
-      undici: 7.28.0
       uuid: 13.0.2
       ws: 8.21.0
     transitivePeerDependencies:

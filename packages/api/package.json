@@ -26,7 +26,7 @@
     "lint:fix": "eslint --fix . && prettier --write ."
   },
   "dependencies": {
-    "@payloadcms/sdk": "^3.85.1",
+    "@payloadcms/sdk": "3.85.1",
     "http-status": "^2.1.0",
     "qs-esm": "^7.0.3"
   },
@@ -35,7 +35,7 @@
     "@jeius-portfolio/types": "workspace:*",
     "@jeius-portfolio/typescript-config": "workspace:*",
     "@jeius-portfolio/utilities": "workspace:*",
-    "payload": "^3.85.1"
+    "payload": "3.85.1"
   },
   "peerDependencies": {
     "@jeius-portfolio/utilities": "workspace:*",
