@@ -12,7 +12,7 @@ export const Route = createFileRoute('/about')({
   loader: async () => {
     const [profile, paginatedExps, paginatedSkills] = await Promise.all([
       getProfile(),
-      getExperiences({ data: { pagination: false, limit: 50 } }),
+      getExperiences({ data: { pagination: false, limit: 50, sort: '-startDate' } }),
       getSkills({ data: { pagination: false, limit: 50 } }),
     ]);
     return { profile, paginatedExps, paginatedSkills };
@@ -62,7 +62,7 @@ function AboutPage() {
           {experiences.map((exp) => (
             <div key={exp.id} className="relative">
               {/* Timeline Dot */}
-              <div className="absolute -left-7.75 top-1.5 h-4 w-4 rounded-full border-2 border-background bg-primary" />
+              <div className="absolute -left-10 h-4 w-4 rounded-full border-8 box-content border-background bg-primary" />
 
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2 mb-2">
                 <h3>{exp.role}</h3>
@@ -103,15 +103,15 @@ function AboutPage() {
       <section className="space-y-8">
         <h2 className="border-b pb-4">Technical Arsenal</h2>
         <div className="grid gap-8 sm:grid-cols-2">
-          {skills.map(([category, skills]) => (
-            <Card key={category}>
+          {skills.map(([category, skills], index) => (
+            <Card key={`${category}-${index}`}>
               <CardTitle className="px-6">
                 <h3>{category}</h3>
               </CardTitle>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <Badge key={skill} variant="secondary" className="bg-background">
+                  {skills.map((skill, idx) => (
+                    <Badge key={`${skill}-${idx}`} variant="secondary" className="bg-primary/10">
                       {skill}
                     </Badge>
                   ))}
