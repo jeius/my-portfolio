@@ -100,14 +100,16 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col selection:bg-primary selection:text-primary-foreground">
         <TooltipProvider>
+          <div className='progress-bar' />
+          
           {/* Sticky, Frosted Glass Navbar */}
           <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
             <div className="container mx-auto p-4 flex justify-between items-center max-w-5xl">
-              <Link
-                to="/"
-                className="font-extrabold text-2xl tracking-tighter hover:opacity-80 transition-opacity"
-              >
-                JP.
+              <Link to="/" className="hover:opacity-80 transition-opacity">
+                <img
+                  src={'/favicon-384x384.png'}
+                  className="rounded-full w-16 aspect-square object-cover"
+                />
               </Link>
               <nav className="flex gap-6 items-center">
                 <Link
@@ -139,7 +141,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main className="flex-1 container mx-auto p-4 max-w-5xl py-12 md:py-24">{children}</main>
+          <main className="flex-1">{children}</main>
 
           <footer className="container mx-auto max-w-5xl p-4 mt-auto">
             <Separator className="mb-8" />
