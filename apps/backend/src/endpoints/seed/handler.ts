@@ -87,7 +87,7 @@ export async function seedHandler(req: PayloadRequest, signal: AbortSignal) {
     return mediaDoc.id;
   };
 
-  const avatarId = await createMedia('avatar.jpg', 'image/jpeg', 'Profile Picture');
+  const avatarId = await createMedia('avatar.png', 'image/png', 'Profile Picture');
   const lactalinkThumbId = await createMedia('lactalink.png', 'image/png', 'Lactalink App');
   const tmsThumbId = await createMedia('tms.png', 'image/png', 'Thesis Management System');
 
