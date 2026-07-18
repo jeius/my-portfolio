@@ -2225,14 +2225,14 @@
       "claude_skills_design_system_templates_design_tokens_starter_padding_x_value"
     ],
     "103": [
-      "claude_skills_design_system_templates_design_tokens_starter_default_type",
-      "claude_skills_design_system_templates_design_tokens_starter_default_value",
       "claude_skills_design_system_templates_design_tokens_starter_full_type",
       "claude_skills_design_system_templates_design_tokens_starter_full_value",
+      "claude_skills_design_system_templates_design_tokens_starter_md_type",
+      "claude_skills_design_system_templates_design_tokens_starter_md_value",
       "claude_skills_design_system_templates_design_tokens_starter_primitive_radius",
-      "claude_skills_design_system_templates_design_tokens_starter_radius_default",
       "claude_skills_design_system_templates_design_tokens_starter_radius_full",
-      "claude_skills_design_system_templates_design_tokens_starter_shadow_default"
+      "claude_skills_design_system_templates_design_tokens_starter_radius_md",
+      "claude_skills_design_system_templates_design_tokens_starter_shadow_md"
     ],
     "104": [
       "claude_skills_ui_styling_scripts_tailwind_config_gen_rationale_192",
@@ -2494,10 +2494,10 @@
       "claude_skills_design_system_templates_design_tokens_starter_destructive_value"
     ],
     "139": [
-      "claude_skills_design_system_templates_design_tokens_starter_md_type",
-      "claude_skills_design_system_templates_design_tokens_starter_md_value",
-      "claude_skills_design_system_templates_design_tokens_starter_radius_md",
-      "claude_skills_design_system_templates_design_tokens_starter_shadow_md"
+      "claude_skills_design_system_templates_design_tokens_starter_default_type",
+      "claude_skills_design_system_templates_design_tokens_starter_default_value",
+      "claude_skills_design_system_templates_design_tokens_starter_radius_default",
+      "claude_skills_design_system_templates_design_tokens_starter_shadow_default"
     ],
     "140": [
       "claude_skills_design_system_templates_design_tokens_starter_color_destructive_foreground",
