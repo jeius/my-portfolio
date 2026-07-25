@@ -252,7 +252,7 @@ importers:
     dependencies:
       '@payloadcms/sdk':
         specifier: 3.85.1
-        version: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
+        version: 3.85.1(graphql@16.14.2)(typescript@5.9.2)
       http-status:
         specifier: ^2.1.0
         version: 2.1.0
@@ -274,7 +274,10 @@ importers:
         version: link:../utilities
       payload:
         specifier: 3.85.1
-        version: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
+        version: 3.85.1(graphql@16.14.2)(typescript@5.9.2)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
 
   packages/enums:
     devDependencies:
@@ -8625,11 +8628,11 @@ snapshots:
       - utf-8-validate
       - yjs
 
-  '@payloadcms/sdk@3.85.1(graphql@16.14.2)(typescript@6.0.3)':
+  '@payloadcms/sdk@3.85.1(graphql@16.14.2)(typescript@5.9.2)':
     dependencies:
-      payload: 3.85.1(graphql@16.14.2)(typescript@6.0.3)
+      payload: 3.85.1(graphql@16.14.2)(typescript@5.9.2)
       qs-esm: 8.0.1
-      ts-essentials: 10.0.3(typescript@6.0.3)
+      ts-essentials: 10.0.3(typescript@5.9.2)
     transitivePeerDependencies:
       - bufferutil
       - graphql
