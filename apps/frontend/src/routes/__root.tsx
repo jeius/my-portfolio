@@ -11,9 +11,9 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
+import Footer from '~/components/Footer';
 import { NotFound } from '~/components/NotFound';
 import { Button } from '~/components/ui/button';
-import { Separator } from '~/components/ui/separator';
 import { TooltipProvider } from '~/components/ui/tooltip';
 import appCss from '~/styles/app.css?url';
 import { getSiteSettings } from '~/utils/api/siteSettings';
@@ -101,7 +101,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="min-h-screen bg-background text-foreground font-sans antialiased flex flex-col selection:bg-primary selection:text-primary-foreground">
         <TooltipProvider>
           <div className='progress-bar' />
-          
+
           {/* Sticky, Frosted Glass Navbar */}
           <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
             <div className="container mx-auto p-4 flex justify-between items-center max-w-5xl">
@@ -143,30 +143,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
           <main className="flex-1">{children}</main>
 
-          <footer className="container mx-auto max-w-5xl p-4 mt-auto">
-            <Separator className="mb-8" />
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground pb-8">
-              <p>© {new Date().getFullYear()} Julius Pahama. All rights reserved.</p>
-              <div className="flex gap-6">
-                {settings.linkedinUrl && (
-                  <a
-                    href={settings?.linkedinUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-foreground transition-colors"
-                  >
-                    LinkedIn
-                  </a>
-                )}
-                <a
-                  href={`mailto:${settings.email}`}
-                  className="hover:text-foreground transition-colors"
-                >
-                  Email
-                </a>
-              </div>
-            </div>
-          </footer>
+          <Footer settings={settings} />
 
           <TanStackRouterDevtools position="bottom-right" />
           <ReactQueryDevtools buttonPosition="bottom-left" />
