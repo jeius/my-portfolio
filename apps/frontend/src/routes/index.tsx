@@ -1,9 +1,7 @@
-import { extractObject } from '@jeius-portfolio/utilities/extractors';
-import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowRightIcon } from 'lucide-react';
 import ButtonLink from '~/components/ButtonLink';
-import { HeroImage, HeroSection } from '~/components/HeroSection';
+import { HeroSection } from '~/components/HeroSection';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { GithubIcon } from '~/components/ui/icons';
@@ -20,24 +18,14 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   const { profile, projects } = Route.useLoaderData();
-  const { avatar, headline, name, bio, location, willingToRelocate } = profile;
-  const avatarDoc = extractObject(avatar);
-  const avatarUrl = avatarDoc?.sizes?.large?.url;
-  const avatarAlt = avatarDoc?.alt;
-
-  const bioHTML = convertLexicalToHTML({
-    data: bio,
-    disableContainer: true,
-  });
 
   return (
     <div className="relative space-y-24">
-      <HeroImage url={avatarUrl} alt={avatarAlt}  />
       <HeroSection
         profile={profile}
-        className="relative container mx-auto p-4 max-w-5xl pt-12 md:pt-24"
+        className="container mx-auto px-4 max-w-5xl pt-12 md:pt-24"
       />
-      <div className="relative container mx-auto p-4 max-w-5xl py-12 md:py-24 z-10">
+      <div className="relative container mx-auto px-4 max-w-5xl mb-12 md:mb-24 z-10">
         {/* Featured Projects Grid */}
         <section className="space-y-10">
           <div className="flex items-center justify-between">
