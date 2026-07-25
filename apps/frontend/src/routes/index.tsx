@@ -1,3 +1,5 @@
+import { Project } from '@jeius-portfolio/types/payload-types';
+import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import { createFileRoute } from '@tanstack/react-router';
 import { ArrowRightIcon } from 'lucide-react';
 import ButtonLink from '~/components/ButtonLink';
@@ -21,10 +23,7 @@ function HomePage() {
 
   return (
     <div className="relative space-y-24">
-      <HeroSection
-        profile={profile}
-        className="container mx-auto px-4 max-w-5xl pt-12 md:pt-24"
-      />
+      <HeroSection profile={profile} className="container mx-auto px-4 max-w-5xl pt-12 md:pt-24" />
       <div className="relative container mx-auto px-4 max-w-5xl mb-12 md:mb-24 z-10">
         {/* Featured Projects Grid */}
         <section className="space-y-10">
@@ -37,50 +36,56 @@ function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {projects?.map((project) => (
-              <Card
-                key={project.id}
-                className="flex flex-col group overflow-hidden border-border/50 hover:border-primary/50 transition-colors"
-              >
-                <CardHeader className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-2xl">{project.title}</CardTitle>
-                    {project.githubLink && (
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        <GithubIcon className="h-5 w-5 fill-foreground" />
-                      </a>
-                    )}
-                  </div>
-                  <CardDescription className="text-base line-clamp-3 leading-relaxed">
-                    {project.description?.[0]?.children?.[0]?.text}
-                  </CardDescription>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {project.relatedSkills?.slice(0, 4).map((skill: any) => (
-                      <Badge key={skill.id} variant="secondary" className="font-normal text-xs">
-                        {skill.name}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardHeader>
-                <CardFooter className="mt-auto pt-6 pb-6">
-                  <ButtonLink
-                    to={`/projects/$projectId`}
-                    params={{ projectId: project.id }}
-                    variant="link"
-                    className="font-semibold text-primary inline-flex items-center"
-                  >
-                    Read Case Study <ArrowRightIcon />
-                  </ButtonLink>
-                </CardFooter>
-              </Card>
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         </section>
       </div>
     </div>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  const descriptionHTML = convertLexicalToHTML({
+    data: project.description,
+    disableContainer: true,
+  });
+
+  return (
+    <Card className="flex flex-col group overflow-hidden border-border/50 hover:border-primary/50 transition-colors">
+      <CardHeader className="space-y-4">
+        <div className="flex justify-between items-start">
+          <CardTitle className="text-2xl">{project.title}</CardTitle>
+          {project.githubLink && (
+            <a
+              href={project.githubLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <GithubIcon className="h-5 w-5 fill-foreground" />
+            </a>
+          )}
+        </div>
+        <CardDescription dangerouslySetInnerHTML={{ __html: descriptionHTML }} />
+        <div className="flex flex-wrap gap-2 pt-2">
+          {project.relatedSkills?.slice(0, 4).map((skill: any) => (
+            <Badge key={skill.id} variant="secondary" className="font-normal text-xs">
+              {skill.name}
+            </Badge>
+          ))}
+        </div>
+      </CardHeader>
+      <CardFooter className="mt-auto pt-6 pb-6">
+        <ButtonLink
+          to={`/projects/$projectId`}
+          params={{ projectId: String(project.id) }}
+          variant="link"
+          className="font-semibold text-primary inline-flex items-center"
+        >
+          Read Case Study <ArrowRightIcon />
+        </ButtonLink>
+      </CardFooter>
+    </Card>
   );
 }
