@@ -1,9 +1,13 @@
-import { getPayload } from 'payload'
+import { User } from '@jeius-portfolio/types/payload-types'
+import { getPayload, RequiredDataFromCollection } from 'payload'
 import config from '../../src/payload.config.js'
 
-export const testUser = {
+export const testUser: RequiredDataFromCollection<User> = {
   email: 'dev@payloadcms.com',
   password: 'test',
+  firstName: 'Dev',
+  lastName: 'Tester',
+  role: 'ADMIN'
 }
 
 /**

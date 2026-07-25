@@ -1,4 +1,4 @@
-import { User } from '@lactalink/types/payload-generated-types';
+import { User } from '@jeius-portfolio/types/payload-types';
 
 export function isAdmin(user: User | null): boolean {
   if (!user) {
