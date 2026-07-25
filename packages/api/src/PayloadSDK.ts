@@ -1,9 +1,9 @@
-import { PayloadSDK as Payload } from '@payloadcms/sdk';
 import type { GetPreference, UpdatePreference } from '@jeius-portfolio/types';
 import type { ApiFetchResponse } from '@jeius-portfolio/types/api';
+import { mergeHeaders } from '@jeius-portfolio/utilities';
+import { PayloadSDK as Payload } from '@payloadcms/sdk';
 import { PayloadTypesShape, UntypedPayloadTypes } from 'payload';
 import { stringify } from 'qs-esm';
-import { mergeHeaders } from '@jeius-portfolio/utilities';
 
 export class PayloadSDK<T extends PayloadTypesShape = UntypedPayloadTypes> extends Payload<T> {
   private headers: Headers = new Headers();
@@ -44,7 +44,7 @@ export class PayloadSDK<T extends PayloadTypesShape = UntypedPayloadTypes> exten
       });
     }
 
-    return response.json();
+    return response.json() as Promise<TData>;
   };
 
   updateHeaders = (headers: Headers) => {
@@ -101,7 +101,7 @@ export class PayloadSDK<T extends PayloadTypesShape = UntypedPayloadTypes> exten
       });
     }
 
-    const result: GetPreference<TValue> = await response.json();
+    const result = (await response.json()) as GetPreference<TValue>;
     return result.value;
   };
 
@@ -120,7 +120,7 @@ export class PayloadSDK<T extends PayloadTypesShape = UntypedPayloadTypes> exten
       });
     }
 
-    const result: UpdatePreference<TValue> = await response.json();
+    const result = (await response.json()) as UpdatePreference<TValue>;
     return result?.doc.value;
   };
 

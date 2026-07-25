@@ -1,5 +1,5 @@
-import { AbortError, BaseError } from '../errors/model';
 import { ApiFetchResponse } from '@jeius-portfolio/types/api';
+import { AbortError, BaseError } from '../errors/model';
 
 /**
  * Extracts the `data` property from an API response, while also handling errors.
@@ -9,7 +9,7 @@ import { ApiFetchResponse } from '@jeius-portfolio/types/api';
  * @returns The `data` property from the API response if the response is OK.
  */
 export async function extractDataFromResponse<T>(response: Response): Promise<T> {
-  const responseData: ApiFetchResponse<T> = await response.json();
+  const responseData = await response.json() as ApiFetchResponse<T>;
 
   if (!response.ok || 'error' in responseData) {
     if (response.status === 499) {
