@@ -1,1 +1,1 @@
-export const API_URL: string = process.env.API_URL!;
+export const API_URL: string = process.env.API_URL! || process.env.VITE_API_URL!;
