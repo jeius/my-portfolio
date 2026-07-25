@@ -9,12 +9,26 @@ type ButtonLinkProps = VariantProps<typeof buttonVariants> &
 
 function Link({ className, variant, size, children, ...props }: ButtonLinkProps) {
   return (
-    <a {...props} data-slot="button-link" className={cn(buttonVariants({ variant, size }), className)}>
+    <a
+      {...props}
+      data-slot="button-link"
+      className={cn(buttonVariants({ variant, size }), className)}
+    >
       {children}
     </a>
   );
 }
 
+function ExternalLink({
+  target = '_blank',
+  rel = 'noopener noreferrer',
+  ...props
+}: ButtonLinkProps) {
+  return <Link {...props} target={target} rel={rel} />;
+}
+
 const ButtonLink = createLink(Link);
+
+export { ButtonLink, ExternalLink };
 
 export default ButtonLink;
