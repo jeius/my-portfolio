@@ -20,8 +20,9 @@
         "S3_SECRET_ACCESS_KEY",
         "S3_REGION",
         "S3_ENDPOINT",
-        "S3_BUCKET_MEDIA"
-      ]
+        "S3_BUCKET_MEDIA",
+        "API_URL"
+      ],
     },
     "test": {
       "outputs": ["coverage/**"],
