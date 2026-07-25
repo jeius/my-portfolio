@@ -1,8 +1,11 @@
+'use client';
+
 import { Profile } from '@jeius-portfolio/types/payload-types';
 import { extractObject } from '@jeius-portfolio/utilities/extractors';
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import { ArrowRightIcon, PhoneIcon } from 'lucide-react';
 import { motion, Transition, Variants } from 'motion/react';
+import { API_URL } from '~/constants/env';
 import { cn } from '~/lib/utils';
 import ButtonLink from './ButtonLink';
 import { TechStack } from './TechStack';
@@ -18,7 +21,7 @@ interface HeroSectionProps {
 export function HeroSection({ profile, className }: HeroSectionProps) {
   const { name, bio, willingToRelocate, avatar } = profile;
   const avatarDoc = extractObject(avatar);
-  const imageUrl = avatarDoc?.url;
+  const imageUrl = avatarDoc?.url || avatarDoc?.sizes?.large?.url;
   const imageAlt = avatarDoc?.alt;
 
   const bioHTML = convertLexicalToHTML({
@@ -60,7 +63,7 @@ export function HeroSection({ profile, className }: HeroSectionProps) {
           className="flex flex-col text-center lg:text-left gap-4"
         >
           <span className="text-2xl sm:text-4xl">Hello I'm</span>
-          <strong className='sm:text-7xl'>{name}</strong>
+          <strong className="sm:text-7xl">{name}</strong>
           <span className="text-2xl sm:text-4xl">Full Stack Developer</span>
         </motion.h1>
 
@@ -101,6 +104,8 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
   const containerHeight = 472;
   const translateY = 32;
   const imgOffset = 48;
+
+  const imgURL = imageUrl && API_URL && new URL(imageUrl, API_URL).toString();
   return (
     <motion.div
       initial={{ opacity: 0, height: containerHeight + translateY }}
@@ -114,9 +119,9 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
         transition={transitionConfig}
         className="pl-32 pr-6"
       >
-        {imageUrl && (
+        {imgURL && (
           <img
-            src={imageUrl}
+            src={imgURL}
             alt={imageAlt || 'Profile Picture'}
             className="flex shrink-0 object-contain w-96 h-96 xl:w-116 xl:h-116"
           />
