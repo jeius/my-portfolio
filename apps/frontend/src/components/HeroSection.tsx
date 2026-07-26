@@ -5,7 +5,6 @@ import { extractObject } from '@jeius-portfolio/utilities/extractors';
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import { ArrowRightIcon, PhoneIcon } from 'lucide-react';
 import { motion, Transition, Variants } from 'motion/react';
-import { API_URL } from '~/constants/env';
 import { cn } from '~/lib/utils';
 import ButtonLink from './ButtonLink';
 import { TechStack } from './TechStack';
@@ -105,7 +104,11 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
   const translateY = 32;
   const imgOffset = 48;
 
-  const imgURL = imageUrl && API_URL && new URL(imageUrl, API_URL).toString();
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const imgURL = imageUrl && new URL(imageUrl, apiUrl).toString();
+
+  if (!imgURL) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0, height: containerHeight + translateY }}
@@ -119,13 +122,11 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
         transition={transitionConfig}
         className="pl-32 pr-6"
       >
-        {imgURL && (
-          <img
-            src={imgURL}
-            alt={imageAlt || 'Profile Picture'}
-            className="flex shrink-0 object-contain w-96 h-96 xl:w-116 xl:h-116"
-          />
-        )}
+        <img
+          src={imgURL}
+          alt={imageAlt || 'Profile Picture'}
+          className="flex shrink-0 object-contain w-96 h-96 xl:w-116 xl:h-116"
+        />
       </motion.div>
     </motion.div>
   );
