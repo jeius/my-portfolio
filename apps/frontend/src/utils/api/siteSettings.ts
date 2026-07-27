@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
-import { apiClient } from '~/lib/api';
+import { apiClient } from '~/config/api';
 
 export const getSiteSettings = createServerFn({ method: 'GET' }).handler(() =>
   apiClient.findGlobal({ slug: 'site-settings', depth: 3 })

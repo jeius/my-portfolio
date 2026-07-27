@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { createServerFn } from '@tanstack/react-start';
-import { apiClient } from '~/lib/api';
+import { apiClient } from '~/config/api';
 
 //@ts-expect-error Tanstack cant infer type on richtext field
 export const getProfile = createServerFn({ method: 'GET' }).handler(() =>

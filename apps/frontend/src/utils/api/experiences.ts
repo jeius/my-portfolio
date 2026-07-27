@@ -1,7 +1,7 @@
 import { Experience } from '@jeius-portfolio/types/payload-types';
 import { createServerFn, OptionalFetcher } from '@tanstack/react-start';
 import type { PaginatedDocs } from 'payload';
-import { apiClient, type FindOptions } from '~/lib/api';
+import { apiClient, type FindOptions } from '~/config/api';
 
 export const getExperiences: OptionalFetcher<
   undefined,

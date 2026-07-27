@@ -1,7 +1,7 @@
 import { Project } from '@jeius-portfolio/types/payload-types';
 import { createServerFn, OptionalFetcher } from '@tanstack/react-start';
 import type { PaginatedDocs } from 'payload';
-import { apiClient, type FindOptions } from '~/lib/api';
+import { apiClient, type FindOptions } from '~/config/api';
 
 //@ts-expect-error Tanstack cant infer type on richtext field
 export const getFeaturedProjects = createServerFn({ method: 'GET' }).handler(async () => {
