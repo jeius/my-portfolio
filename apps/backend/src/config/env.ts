@@ -14,8 +14,8 @@ const envSchema = z.object({
 
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.url(),
-  NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL: z.url().nullish(),
-  NEXT_PUBLIC_VERCEL_URL: z.url().nullish(),
+  NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL: z.string().nullish(),
+  NEXT_PUBLIC_VERCEL_URL: z.string().nullish(),
 });
 
 /**
