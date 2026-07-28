@@ -13,3 +13,5 @@ public/dist
 claude/*
 .claude/worktrees/*
 *.local.json
+# Local Netlify folder
+.netlify

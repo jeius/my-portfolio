@@ -1,0 +1,13 @@
+[build]
+  command = "pnpm build:frontend"
+  publish = "apps/frontend/dist/client"
+  ignore = "pnpm dlx turbo-ignore @jeius-portfolio/frontend"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "apps/frontend/.netlify/functions"
+
+[images]
+  remote_images = ["https://vpzsxbxfpmkzeefypjmw\\.supabase\\.co/storage/v1/object/public/.*"]
