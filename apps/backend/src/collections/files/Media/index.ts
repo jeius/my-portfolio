@@ -24,13 +24,12 @@ export const Media: CollectionConfig<'media'> = {
     displayPreview: true,
     bulkUpload: true,
     mimeTypes: ['image/*', 'video/*'],
-    formatOptions: { format: 'webp', options: { quality: 100 } },
     imageSizes: [
       {
         name: 'thumbnail',
         width: 400,
         height: 300,
-        formatOptions: { format: 'webp' },
+        formatOptions: { format: 'webp', options: { quality: 80 } },
         withoutEnlargement: false,
         admin: {
           disableGroupBy: true, // hide from list view groupBy options
