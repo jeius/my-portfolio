@@ -1,5 +1,5 @@
-import { admin } from '@/access'
-import type { CollectionConfig } from 'payload'
+import { admin } from '@/access';
+import type { CollectionConfig } from 'payload';
 
 export const Media: CollectionConfig<'media'> = {
   slug: 'media',
@@ -24,6 +24,7 @@ export const Media: CollectionConfig<'media'> = {
     displayPreview: true,
     bulkUpload: true,
     mimeTypes: ['image/*', 'video/*'],
+    formatOptions: { format: 'webp', options: { quality: 100 } },
     imageSizes: [
       {
         name: 'thumbnail',
@@ -37,20 +38,6 @@ export const Media: CollectionConfig<'media'> = {
           disableListFilter: true, // hide from list view filters
         },
       },
-      {
-        name: 'small',
-        width: 600,
-        fit: 'contain',
-        formatOptions: { format: 'webp' },
-        withoutEnlargement: false,
-      },
-      {
-        name: 'large',
-        width: 1800,
-        fit: 'contain',
-        formatOptions: { format: 'webp' },
-        withoutEnlargement: false,
-      }
     ],
   },
-}
+};

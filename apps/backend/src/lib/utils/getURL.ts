@@ -1,38 +1,29 @@
+import { clientEnv, serverEnv } from '@/config/env';
 import canUseDOM from './canUseDOM';
 
-const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL ?? process.env.COOLIFY_URL;
+const localHost = 'http://localhost:4000';
 
-export const getClientSideURL = (): string | 'http://localhost:3000' => {
-  let url = serverUrl;
+export const getClientSideURL = (): string => {
+  if (!canUseDOM) return getServerSideURL();
 
-  if (canUseDOM) {
-    const protocol = window.location.protocol;
-    const domain = window.location.hostname;
-    const port = window.location.port;
+  const protocol = window.location.protocol;
+  const domain = window.location.hostname;
+  const port = window.location.port;
+  const origin = window.location.origin;
 
-    const origin = window.location.origin;
-
-    url = origin || `${protocol}//${domain}${port ? `:${port}` : ''}`;
-  } else if (!url && vercelProdUrl) {
-    url = `https://${vercelProdUrl}`;
-  } else if (!url) {
-    url = 'http://localhost:3000';
-  }
-
-  return url;
+  return origin || `${protocol}//${domain}${port ? `:${port}` : ''}`;
 };
 
-export const getServerSideURL = (): string | 'http://localhost:3000' => {
-  let url = serverUrl;
+export const getServerSideURL = (): string => {
+  const vercelProdUrl = clientEnv.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL || clientEnv.NEXT_PUBLIC_VERCEL_URL;
+  const coolifyUrl = serverEnv.COOLIFY_URL;
 
-  if (!url && vercelProdUrl) {
-    url = `https://${vercelProdUrl}`;
-  } else if (!url) {
-    url = 'http://localhost:3000';
+  if (vercelProdUrl) {
+    return `https://${vercelProdUrl}`;
+  } else if (coolifyUrl) {
+    return coolifyUrl;
   }
-
-  return url;
+  return localHost;
 };
 
 export function validateUrl(url: unknown): url is string {
