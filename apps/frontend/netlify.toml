@@ -1,7 +1,7 @@
 [build]
   command = "pnpm build:frontend"
   publish = "apps/frontend/dist/client"
-  ignore = "pnpm dlx turbo-ignore @jeius-portfolio/frontend"
+  ignore = "pnpm dlx turbo query affected --base=$CACHED_COMMIT_REF --packages @jeius-portfolio/frontend --exit-code"
 
 [build.environment]
   NODE_VERSION = "24"
