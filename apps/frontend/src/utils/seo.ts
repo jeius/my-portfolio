@@ -12,7 +12,7 @@ export const seo = ({
 }: {
   keywords?: string;
 } & SiteMeta) => {
-  const imageUrl = extractObject(image)?.sizes?.large?.url;
+  const imageUrl = extractObject(image)?.url;
   const seoTitle = title || DEFAULT_TITLE;
   const seoDescription = description || DEFAULT_DESCRIPTION;
   const tags = [

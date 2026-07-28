@@ -6,6 +6,7 @@ import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html';
 import { ArrowRightIcon, PhoneIcon } from 'lucide-react';
 import { motion, Transition, Variants } from 'motion/react';
 import { cn } from '~/lib/utils';
+import { netlifyImage } from '~/utils/netlifyImage';
 import ButtonLink from './ButtonLink';
 import { TechStack } from './TechStack';
 import { Badge } from './ui/badge';
@@ -20,7 +21,7 @@ interface HeroSectionProps {
 export function HeroSection({ profile, className }: HeroSectionProps) {
   const { name, bio, willingToRelocate, avatar } = profile;
   const avatarDoc = extractObject(avatar);
-  const imageUrl = avatarDoc?.url || avatarDoc?.sizes?.large?.url;
+  const imageUrl = avatarDoc?.url;
   const imageAlt = avatarDoc?.alt;
 
   const bioHTML = convertLexicalToHTML({
@@ -104,10 +105,7 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
   const translateY = 32;
   const imgOffset = 48;
 
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const imgURL = imageUrl && new URL(imageUrl, apiUrl).toString();
-
-  if (!imgURL) return null;
+  if (!imageUrl) return null;
 
   return (
     <motion.div
@@ -123,7 +121,12 @@ export function HeroImage({ url: imageUrl, alt: imageAlt }: HeroImageProps) {
         className="pl-32 pr-6"
       >
         <img
-          src={imgURL}
+          src={netlifyImage(imageUrl, { width: 800, quality: 80 })}
+          srcSet={[800, 1500, 3000]
+            .map((w) => `${netlifyImage(imageUrl, { width: w, quality: 80 })} ${w}w`)
+            .join(', ')}
+          sizes="(max-width: 768px) 100vw, 800px"
+          loading="lazy"
           alt={imageAlt || 'Profile Picture'}
           className="flex shrink-0 object-contain w-96 h-96 xl:w-116 xl:h-116"
         />
