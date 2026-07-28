@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   API_URL: z.url(),
-  NODE_ENV: z.enum(['development', 'production', 'test']),
 });
 
 const clientEnvSchema = z.object({
